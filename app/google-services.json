@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1046134502638",
+    "project_id": "yazilim-f9e6c",
+    "storage_bucket": "yazilim-f9e6c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046134502638:android:c6de2c8aea64b04308afff",
+        "android_client_info": {
+          "package_name": "com.berberbul.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqEl1WPrfHDdQkHVn0v589vluO7Cl8KuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
