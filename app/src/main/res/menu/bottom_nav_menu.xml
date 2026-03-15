@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/randevuAlFragment"
+        android:title="Randevu Al" />
+    <item
+        android:id="@+id/randevularimFragment"
+        android:title="Randevularım" />
+    <item
+        android:id="@+id/profilFragment"
+        android:title="Profil" />
+</menu>

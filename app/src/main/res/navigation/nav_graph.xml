@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/profilFragment">
+
+    <fragment
+        android:id="@+id/profilFragment"
+        android:name="com.berberbul.app.ProfilFragment"
+        android:label="fragment_profil"
+        tools:layout="@layout/fragment_profil" />
+    <fragment
+        android:id="@+id/randevuAlFragment"
+        android:name="com.berberbul.app.RandevuAlFragment"
+        android:label="fragment_randevu_al"
+        tools:layout="@layout/fragment_randevu_al" />
+    <fragment
+        android:id="@+id/randevularimFragment"
+        android:name="com.berberbul.app.RandevularimFragment"
+        android:label="fragment_randevularim"
+        tools:layout="@layout/fragment_randevularim" />
+</navigation>
