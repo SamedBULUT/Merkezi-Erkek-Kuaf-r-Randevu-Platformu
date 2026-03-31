@@ -18,6 +18,19 @@
             android:textSize="24sp"
             android:layout_marginBottom="20dp"/>
 
+        <TextView
+            android:id="@+id/tvSecilenTarih"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tarih Seçmek İçin Tıklayın"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@android:color/black"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
         <Button
             android:id="@+id/btnRandevuAl"
             android:layout_width="wrap_content"

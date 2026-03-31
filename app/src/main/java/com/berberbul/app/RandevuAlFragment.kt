@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
 
 class RandevuAlFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
+    // YENİ: Seçilen tarihi saklamak için değişken
+    private var secilenTarihBilgisi = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,20 +28,40 @@ class RandevuAlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val randevuButonu = view.findViewById<Button>(R.id.btnRandevuAl)
+        // YENİ: XML'e eklediğimiz tarih yazısını buluyoruz
+        val tvTarih = view.findViewById<TextView>(R.id.tvSecilenTarih)
 
+        // YENİ: Tarih yazısına tıklandığında takvim açılsın
+        tvTarih?.setOnClickListener {
+            val takvim = Calendar.getInstance()
+            val yil = takvim.get(Calendar.YEAR)
+            val ay = takvim.get(Calendar.MONTH)
+            val gun = takvim.get(Calendar.DAY_OF_MONTH)
+
+            val dpd = android.app.DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
+                // Seçilen tarihi formatlıyoruz (Örn: 2026-3-31)
+                secilenTarihBilgisi = "$year-${monthOfYear + 1}-$dayOfMonth"
+                tvTarih.text = "Seçilen Tarih: $secilenTarihBilgisi"
+            }, yil, ay, gun)
+
+            dpd.show()
+        }
 
         randevuButonu?.setOnClickListener {
-            randevuKaydet()
+            // YENİ: Tarih seçilip seçilmediğini kontrol ediyoruz
+            if (secilenTarihBilgisi.isEmpty()) {
+                Toast.makeText(context, "Lütfen önce bir tarih seçin!", Toast.LENGTH_SHORT).show()
+            } else {
+                randevuKaydet()
+            }
         }
     }
 
-
     private fun randevuKaydet() {
-        val secilenTarih = "2026-03-30"
+        // GÜNCELLENDİ: Artık sabit tarih yerine yukarıdaki değişkeni kullanıyoruz
+        val secilenTarih = secilenTarihBilgisi
         val secilenSaat = "14:00"
-
 
         db.collection("randevular")
             .whereEqualTo("date", secilenTarih)
@@ -61,7 +85,6 @@ class RandevuAlFragment : Fragment() {
             }
     }
 
-
     private fun gercekKaydiYap(tarih: String, saat: String) {
         val yeniRandevu = Randevu(
             barberName = "Kuafor Selim",
@@ -74,7 +97,6 @@ class RandevuAlFragment : Fragment() {
         db.collection("randevular")
             .add(yeniRandevu)
             .addOnSuccessListener { documentReference ->
-
                 db.collection("randevular").document(documentReference.id)
                     .update("id", documentReference.id)
 
