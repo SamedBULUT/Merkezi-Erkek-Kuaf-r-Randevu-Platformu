@@ -9,14 +9,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.berberbul.app.data.Berber
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 class RandevuAlFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
-    // YENİ: Seçilen tarihi saklamak için değişken
     private var secilenTarihBilgisi = ""
+
+    private lateinit var rvBerberler: RecyclerView
+    private lateinit var berberAdapter: BerberAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,11 +33,26 @@ class RandevuAlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Arayüz bileşenlerinin tanımlanması
         val randevuButonu = view.findViewById<Button>(R.id.btnRandevuAl)
-        // YENİ: XML'e eklediğimiz tarih yazısını buluyoruz
         val tvTarih = view.findViewById<TextView>(R.id.tvSecilenTarih)
+        rvBerberler = view.findViewById(R.id.rvBerberList)
 
-        // YENİ: Tarih yazısına tıklandığında takvim açılsın
+        // RecyclerView yapılandırması
+        rvBerberler.layoutManager = LinearLayoutManager(requireContext())
+
+        // Liste için statik test verileri (İlerleyen aşamalarda Firebase'den çekilecektir)
+        val testBerberleri = listOf(
+            Berber(id = 1, dukkanAdi = "MUZO", adres = "Kalkınma, Trabzon", ortalamaPuan = 4.8f, yorumSayisi = 120, musteriyeUzaklik = 1.2),
+            Berber(id = 2, dukkanAdi = "iBoss", adres = "Kalkınma, Trabzon", ortalamaPuan = 4.5f, yorumSayisi = 85, musteriyeUzaklik = 3.5),
+            Berber(id = 3, dukkanAdi = "Arzum Erkek Berberi", adres = "Kalkınma, Trabzon", ortalamaPuan = 4.2f, yorumSayisi = 40, musteriyeUzaklik = 0.8)
+        )
+
+        // Adapter bağlantısının sağlanması
+        berberAdapter = BerberAdapter(testBerberleri)
+        rvBerberler.adapter = berberAdapter
+
+        // Tarih seçici (DatePicker) yapılandırması
         tvTarih?.setOnClickListener {
             val takvim = Calendar.getInstance()
             val yil = takvim.get(Calendar.YEAR)
@@ -40,7 +60,6 @@ class RandevuAlFragment : Fragment() {
             val gun = takvim.get(Calendar.DAY_OF_MONTH)
 
             val dpd = android.app.DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-                // Seçilen tarihi formatlıyoruz (Örn: 2026-3-31)
                 secilenTarihBilgisi = "$year-${monthOfYear + 1}-$dayOfMonth"
                 tvTarih.text = "Seçilen Tarih: $secilenTarihBilgisi"
             }, yil, ay, gun)
@@ -48,8 +67,8 @@ class RandevuAlFragment : Fragment() {
             dpd.show()
         }
 
+        // Randevu oluşturma tetikleyicisi
         randevuButonu?.setOnClickListener {
-            // YENİ: Tarih seçilip seçilmediğini kontrol ediyoruz
             if (secilenTarihBilgisi.isEmpty()) {
                 Toast.makeText(context, "Lütfen önce bir tarih seçin!", Toast.LENGTH_SHORT).show()
             } else {
@@ -58,8 +77,8 @@ class RandevuAlFragment : Fragment() {
         }
     }
 
+    // Firebase üzerinde saat çakışması kontrolü
     private fun randevuKaydet() {
-        // GÜNCELLENDİ: Artık sabit tarih yerine yukarıdaki değişkeni kullanıyoruz
         val secilenTarih = secilenTarihBilgisi
         val secilenSaat = "14:00"
 
@@ -69,15 +88,9 @@ class RandevuAlFragment : Fragment() {
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-                    // SAAT BOŞ: Kaydı başlat
                     gercekKaydiYap(secilenTarih, secilenSaat)
                 } else {
-                    // SAAT DOLU: Uyarı ver
-                    Toast.makeText(
-                        context,
-                        "Üzgünüz, bu saat dolu! Başka bir saat seçin.",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(context, "Üzgünüz, bu saat dolu! Başka bir saat seçin.", Toast.LENGTH_LONG).show()
                 }
             }
             .addOnFailureListener { e ->
@@ -85,13 +98,17 @@ class RandevuAlFragment : Fragment() {
             }
     }
 
+
+    // Başarılı doğrulamadan sonra veritabanına kayıt işlemi
     private fun gercekKaydiYap(tarih: String, saat: String) {
-        val yeniRandevu = Randevu(
-            barberName = "Kuafor Selim",
-            customerName = "Müşteri Can",
-            date = tarih,
-            time = saat,
-            isConfirmed = false
+
+
+        val yeniRandevu = hashMapOf(
+            "barberName" to "Kuafor Selim",
+            "customerName" to "Müşteri Can",
+            "date" to tarih,
+            "time" to saat,
+            "isConfirmed" to false
         )
 
         db.collection("randevular")
@@ -100,8 +117,7 @@ class RandevuAlFragment : Fragment() {
                 db.collection("randevular").document(documentReference.id)
                     .update("id", documentReference.id)
 
-                Toast.makeText(context, "Randevunuz Başarıyla Oluşturuldu!", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, "Randevunuz Başarıyla Oluşturuldu!", Toast.LENGTH_SHORT).show()
                 Log.d("FirebaseBackend", "Yeni Randevu Oluştu: ${documentReference.id}")
             }
             .addOnFailureListener { e ->
