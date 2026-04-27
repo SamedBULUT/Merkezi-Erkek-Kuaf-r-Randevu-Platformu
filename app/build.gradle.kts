@@ -17,7 +17,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    dependencies {
+        implementation("org.osmdroid:osmdroid-android:6.1.18")
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
