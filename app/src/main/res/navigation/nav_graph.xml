@@ -11,13 +11,21 @@
         android:label="fragment_profil"
         tools:layout="@layout/fragment_profil" />
     <fragment
-        android:id="@+id/randevuAlFragment"
+        android:id="@+id/RandevuAlFragment"
         android:name="com.berberbul.app.RandevuAlFragment"
         android:label="fragment_randevu_al"
-        tools:layout="@layout/fragment_randevu_al" />
+        tools:layout="@layout/fragment_randevu_al" >
+        <action
+            android:id="@+id/action_RandevuAlFragment_to_BerberProfilFragment"
+            app:destination="@id/BerberProfilFragment" />
+    </fragment>
     <fragment
         android:id="@+id/randevularimFragment"
         android:name="com.berberbul.app.RandevularimFragment"
         android:label="fragment_randevularim"
         tools:layout="@layout/fragment_randevularim" />
+    <fragment
+        android:id="@+id/BerberProfilFragment"
+        android:name="com.berberbul.app.BerberProfilFragment"
+        android:label="BerberProfilFragment" />
 </navigation>

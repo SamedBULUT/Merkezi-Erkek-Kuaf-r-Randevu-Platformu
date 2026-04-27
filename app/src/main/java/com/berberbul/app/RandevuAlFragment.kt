@@ -41,15 +41,24 @@ class RandevuAlFragment : Fragment() {
         // RecyclerView yapılandırması
         rvBerberler.layoutManager = LinearLayoutManager(requireContext())
 
+        val anlikKullaniciEnlem = 41.0027
+        val anlikKullaniciBoylam = 39.7168
+
         // Liste için statik test verileri (İlerleyen aşamalarda Firebase'den çekilecektir)
         val testBerberleri = listOf(
-            Berber(id = 1, dukkanAdi = "MUZO", adres = "Kalkınma, Trabzon", ortalamaPuan = 4.8f, yorumSayisi = 120, musteriyeUzaklik = 1.2),
-            Berber(id = 2, dukkanAdi = "iBoss", adres = "Kalkınma, Trabzon", ortalamaPuan = 4.5f, yorumSayisi = 85, musteriyeUzaklik = 3.5),
-            Berber(id = 3, dukkanAdi = "Arzum Erkek Berberi", adres = "Kalkınma, Trabzon", ortalamaPuan = 4.2f, yorumSayisi = 40, musteriyeUzaklik = 0.8)
+            Berber(id = 1, dukkanAdi = "MUZO", enlem = 41.0050, boylam = 39.7200, adres = "Kalkınma, Trabzon", ortalamaPuan = 4.8f, yorumSayisi = 120),
+            Berber(id = 2, dukkanAdi = "iBoss", enlem = 40.9950, boylam = 39.7100, adres = "Kalkınma, Trabzon", ortalamaPuan = 4.5f, yorumSayisi = 85),
+            Berber(id = 3, dukkanAdi = "Arzum Erkek Berberi", enlem = 41.0100, boylam = 39.7300, adres = "Kalkınma, Trabzon", ortalamaPuan = 4.2f, yorumSayisi = 40)
         )
 
+        testBerberleri.forEach { berber ->
+            berber.musteriyeUzaklik = mesafeHesapla(anlikKullaniciEnlem, anlikKullaniciBoylam, berber.enlem, berber.boylam)
+        }
+
+        val siraliBerberListesi = testBerberleri.sortedBy { it.musteriyeUzaklik }
+
         // Adapter bağlantısının sağlanması
-        berberAdapter = BerberAdapter(testBerberleri)
+        berberAdapter = BerberAdapter(siraliBerberListesi)
         rvBerberler.adapter = berberAdapter
 
         // Tarih seçici (DatePicker) yapılandırması
@@ -75,6 +84,17 @@ class RandevuAlFragment : Fragment() {
                 randevuKaydet()
             }
         }
+    }
+
+    private fun mesafeHesapla(kullaniciEnlem: Double, kullaniciBoylam: Double, berberEnlem: Double, berberBoylam: Double): Double {
+        val r = 6371.0
+        val dLat = Math.toRadians(berberEnlem - kullaniciEnlem)
+        val dLon = Math.toRadians(berberBoylam - kullaniciBoylam)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(kullaniciEnlem)) * Math.cos(Math.toRadians(berberEnlem)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return r * c
     }
 
     // Firebase üzerinde saat çakışması kontrolü
