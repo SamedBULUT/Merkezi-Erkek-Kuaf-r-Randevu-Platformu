@@ -1,11 +1,12 @@
 package com.berberbul.app
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.berberbul.app.R
 import com.berberbul.app.data.Berber
 
 class BerberAdapter(private var berberListesi: List<Berber>) : RecyclerView.Adapter<BerberAdapter.BerberViewHolder>() {
@@ -36,6 +37,17 @@ class BerberAdapter(private var berberListesi: List<Berber>) : RecyclerView.Adap
         } else {
             val km = String.format("%.1f", oAnkiBerber.musteriyeUzaklik)
             holder.tvMesafe.text = "$km km"
+        }
+
+        holder.itemView.setOnClickListener { view ->
+            val bundle = Bundle().apply {
+                putInt("berberId", oAnkiBerber.id)
+                putString("dukkanAdi", oAnkiBerber.dukkanAdi)
+                putDouble("enlem", oAnkiBerber.enlem)
+                putDouble("boylam", oAnkiBerber.boylam)
+                putString("adres", oAnkiBerber.adres)
+            }
+            Navigation.findNavController(view).navigate(R.id.action_RandevuAlFragment_to_BerberProfilFragment, bundle)
         }
     }
 
