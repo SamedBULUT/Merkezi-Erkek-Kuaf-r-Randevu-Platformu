@@ -1,5 +1,7 @@
 package com.berberbul.app
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,13 +20,17 @@ class BerberProfilFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
     private var secilenTarihBilgisi = ""
+    private var secilenSaatBilgisi = ""
 
     private var berberId: Int = 0
     private var dukkanAdi: String = ""
     private var enlem: Double = 0.0
     private var boylam: Double = 0.0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_berber_profil, container, false)
     }
 
@@ -57,20 +63,51 @@ class BerberProfilFragment : Fragment() {
         }
 
         val tvTarih = view.findViewById<TextView>(R.id.tvProfilTarih)
+        val tvSaat = view.findViewById<TextView>(R.id.tvProfilSaat)
         val btnRandevu = view.findViewById<Button>(R.id.btnProfilRandevuAl)
 
         tvTarih.setOnClickListener {
             val takvim = Calendar.getInstance()
-            val dpd = android.app.DatePickerDialog(requireContext(), { _, year, month, day ->
+            val dpd = DatePickerDialog(requireContext(), { _, year, month, day ->
                 secilenTarihBilgisi = "$year-${month + 1}-$day"
                 tvTarih.text = "Seçilen Tarih: $secilenTarihBilgisi"
+                secilenSaatBilgisi = ""
+                tvSaat.text = "Saat Seçmek İçin Dokunun"
             }, takvim.get(Calendar.YEAR), takvim.get(Calendar.MONTH), takvim.get(Calendar.DAY_OF_MONTH))
+
+            dpd.datePicker.minDate = System.currentTimeMillis() - 1000
             dpd.show()
         }
 
-        btnRandevu.setOnClickListener {
+        tvSaat.setOnClickListener {
             if (secilenTarihBilgisi.isEmpty()) {
-                Toast.makeText(context, "Lütfen tarih seçin!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Lütfen önce bir tarih seçin!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val suAn = Calendar.getInstance()
+            TimePickerDialog(requireContext(), { _, secilenSaat, secilenDakika ->
+                val bugunString = "${suAn.get(Calendar.YEAR)}-${suAn.get(Calendar.MONTH) + 1}-${suAn.get(Calendar.DAY_OF_MONTH)}"
+
+                if (secilenTarihBilgisi == bugunString) {
+                    val suAnkiSaat = suAn.get(Calendar.HOUR_OF_DAY)
+                    val suAnkiDakika = suAn.get(Calendar.MINUTE)
+
+                    if (secilenSaat < suAnkiSaat || (secilenSaat == suAnkiSaat && secilenDakika < suAnkiDakika)) {
+                        Toast.makeText(requireContext(), "Geçmiş bir saate randevu alamazsınız!", Toast.LENGTH_LONG).show()
+                        return@TimePickerDialog
+                    }
+                }
+
+                secilenSaatBilgisi = String.format("%02d:%02d", secilenSaat, secilenDakika)
+                tvSaat.text = "Seçilen Saat: $secilenSaatBilgisi"
+
+            }, suAn.get(Calendar.HOUR_OF_DAY), suAn.get(Calendar.MINUTE), true).show()
+        }
+
+        btnRandevu.setOnClickListener {
+            if (secilenTarihBilgisi.isEmpty() || secilenSaatBilgisi.isEmpty()) {
+                Toast.makeText(requireContext(), "Lütfen hem tarih hem de saat seçin!", Toast.LENGTH_SHORT).show()
             } else {
                 randevuKaydet()
             }
@@ -78,15 +115,22 @@ class BerberProfilFragment : Fragment() {
     }
 
     private fun randevuKaydet() {
-        val secilenSaat = "14:00"
+        Log.d("BackendTest", "Randevu sorgusu başladı -> Tarih: $secilenTarihBilgisi, Saat: $secilenSaatBilgisi")
 
         db.collection("randevular")
             .whereEqualTo("date", secilenTarihBilgisi)
-            .whereEqualTo("time", secilenSaat)
+            .whereEqualTo("time", secilenSaatBilgisi)
             .get()
             .addOnSuccessListener { documents ->
-                if (documents.isEmpty) gercekKaydiYap(secilenTarihBilgisi, secilenSaat)
-                else Toast.makeText(context, "Bu saat dolu!", Toast.LENGTH_SHORT).show()
+                if (documents.isEmpty) {
+                    gercekKaydiYap(secilenTarihBilgisi, secilenSaatBilgisi)
+                } else {
+                    Toast.makeText(requireContext(), "Bu saat dolu!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("BackendTest", "Firebase Sorgu Hatası", exception)
+                Toast.makeText(requireContext(), "Sorgu Hatası: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
             }
     }
 
@@ -100,8 +144,14 @@ class BerberProfilFragment : Fragment() {
             "isConfirmed" to false
         )
 
-        db.collection("randevular").add(yeniRandevu).addOnSuccessListener {
-            Toast.makeText(context, "Randevu Başarıyla Alındı!", Toast.LENGTH_SHORT).show()
-        }
+        db.collection("randevular").add(yeniRandevu)
+            .addOnSuccessListener {
+                Log.d("BackendTest", "Kayıt BAŞARILI!")
+                Toast.makeText(requireContext(), "Randevu Başarıyla Alındı!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Log.e("BackendTest", "Kayıt Yazma Hatası", exception)
+                Toast.makeText(requireContext(), "Kayıt Hatası: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
+            }
     }
 }
