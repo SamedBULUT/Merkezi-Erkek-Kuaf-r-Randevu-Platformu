@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tvProfilDukkanAdi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Berber Adı"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvProfilAdres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#007BFF"
+        android:gravity="center"
+        android:text="Adres Bilgisi"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tvProfilTarih"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tarih Seçmek İçin Dokunun"
+        android:padding="12dp"
+        android:background="?android:attr/editTextBackground"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+    <TextView
+        android:id="@+id/tvProfilSaat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Saat Seçmek İçin Dokunun"
+        android:padding="12dp"
+        android:background="?android:attr/editTextBackground"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+    <Button
+        android:id="@+id/btnProfilRandevuAl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Randevu Al"/>
+
+</LinearLayout>

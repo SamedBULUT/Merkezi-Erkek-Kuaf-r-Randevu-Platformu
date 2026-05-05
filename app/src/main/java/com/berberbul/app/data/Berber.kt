@@ -1,10 +1,13 @@
 package com.berberbul.app.data
 
 data class Berber(
-    val id: Int,
-    val dukkanAdi: String,
-    val enlem: Double,      // Harita pin yerleşimi için
-    val boylam: Double,     // Harita pin yerleşimi için
-    val ortalamaPuan: Float,
-    val hizmetler: List<String>
+    val id: Int = 0,
+    val dukkanAdi: String = "",
+    val enlem: Double = 0.0,
+    val boylam: Double = 0.0,
+    val ortalamaPuan: Float = 0f,
+    val hizmetler: List<String> = emptyList(),
+    val adres: String = "Adres bilgisi yok",
+    val yorumSayisi: Int = 0,
+    var musteriyeUzaklik: Double = 0.0
 )

@@ -1,14 +1,10 @@
 package com.berberbul.app
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.osmdroid.config.Configuration
-import org.osmdroid.views.MapView
-import org.osmdroid.util.GeoPoint
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -17,9 +13,6 @@ class ProfilFragment : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
-
-    // Harita değişkenimiz
-    private lateinit var mapView: MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +26,7 @@ class ProfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+<<<<<<< berber-paneli-arayuz
         // Harita ayarını yükle
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
 
@@ -69,6 +63,10 @@ class ProfilFragment : Fragment() {
         if (::mapView.isInitialized) {
             mapView.onPause()
         }
+=======
+        // Kendi tasarımını (layout) kullan
+        return inflater.inflate(R.layout.fragment_profil, container, false)
+>>>>>>> main
     }
 
     companion object {
