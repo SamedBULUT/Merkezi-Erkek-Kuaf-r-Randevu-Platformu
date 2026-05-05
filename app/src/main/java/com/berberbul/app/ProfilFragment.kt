@@ -33,23 +33,30 @@ class ProfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // 1. Adım: Harita ayarını yükle
+        // Harita ayarını yükle
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
 
-        // 2. Adım: Kendi tasarımını (layout) kullan
+        // Kendi tasarımını (layout) kullan
         val view = inflater.inflate(R.layout.fragment_berber_yonetim, container, false)
 
-        // 3. Adım: Haritayı başlat
+        // Haritayı başlat
         mapView = view.findViewById(R.id.mapContainer)
-        mapView.setMultiTouchControls(true)
-        mapView.controller.setZoom(15.0)
-        // Trabzon koordinatları
-        mapView.controller.setCenter(GeoPoint(41.0015, 39.7568))
+
+        setupBerberHaritasi()
 
         return view
     }
 
-    // Haritanın uygulama içinde düzgün çalışması için eklenmeli
+    private fun setupBerberHaritasi() {
+        mapView.setMultiTouchControls(true)
+        val mapController = mapView.controller
+        mapController.setZoom(15.0)
+
+        // Trabzon koordinatları (KTÜ çevresi)
+        val startPoint = GeoPoint(41.0015, 39.7568)
+        mapController.setCenter(startPoint)
+    }
+
     override fun onResume() {
         super.onResume()
         if (::mapView.isInitialized) {
