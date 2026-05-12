@@ -39,5 +39,12 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.berberbul.app.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_RandevuAlFragment"
+            app:destination="@id/RandevuAlFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_profilFragment"
+            app:destination="@id/profilFragment" />
+    </fragment>
 </navigation>
