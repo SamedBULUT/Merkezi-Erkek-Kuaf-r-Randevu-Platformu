@@ -30,6 +30,7 @@ class LoginFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        // Kapak sayfasından gelen rolü alıyoruz (Örn: "berber" veya "musteri")
         val gelenRol = arguments?.getString("KULLANICI_ROLU") ?: "musteri"
 
         val etEmail = view.findViewById<EditText>(R.id.etEmail)
@@ -93,10 +94,10 @@ class LoginFragment : Fragment() {
     private fun sayfayaYonlendir(rol: String?) {
         try {
             if (rol == "berber") {
-                // nav_graph'taki ok isminle aynı olmalı
-                findNavController().navigate(R.id.action_loginFragment_to_RandevuAlFragment)
+                // Berber rolüyle giriş yapıldığında doğrudan yeni oluşturduğumuz BerberAnaFragment paneline gidiyor
+                findNavController().navigate(R.id.action_loginFragment_to_berberAnaFragment)
             } else {
-                // nav_graph'taki ok isminle aynı olmalı (Harita sayfası)
+                // Müşteri ise kendi tarafına gidiyor
                 findNavController().navigate(R.id.action_loginFragment_to_profilFragment)
             }
         } catch (e: Exception) {

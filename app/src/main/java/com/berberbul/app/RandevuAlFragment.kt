@@ -44,7 +44,7 @@ class RandevuAlFragment : Fragment() {
         val anlikKullaniciEnlem = 41.0027
         val anlikKullaniciBoylam = 39.7168
 
-        // Liste için statik test verileri (İlerleyen aşamalarda Firebase'den çekilecektir)
+        // Liste için statik test verileri
         val testBerberleri = listOf(
             Berber(id = 1, dukkanAdi = "MUZO", enlem = 41.0050, boylam = 39.7200, adres = "Kalkınma, Trabzon", ortalamaPuan = 4.8f, yorumSayisi = 120),
             Berber(id = 2, dukkanAdi = "iBoss", enlem = 40.9950, boylam = 39.7100, adres = "Kalkınma, Trabzon", ortalamaPuan = 4.5f, yorumSayisi = 85),
@@ -118,17 +118,16 @@ class RandevuAlFragment : Fragment() {
             }
     }
 
-
     // Başarılı doğrulamadan sonra veritabanına kayıt işlemi
     private fun gercekKaydiYap(tarih: String, saat: String) {
 
-
+        // Berberin panelindeki filtrelerle birebir eşleşecek nesneyi hazırlıyoruz
         val yeniRandevu = hashMapOf(
-            "barberName" to "Kuafor Selim",
+            "barberName" to "Kuaför Selim", // Türkçe karakter uyumuna dikkat edildi
             "customerName" to "Müşteri Can",
             "date" to tarih,
             "time" to saat,
-            "isConfirmed" to false
+            "status" to "Bekliyor" // Berberin filtreleyebilmesi için eklendi
         )
 
         db.collection("randevular")
@@ -137,7 +136,7 @@ class RandevuAlFragment : Fragment() {
                 db.collection("randevular").document(documentReference.id)
                     .update("id", documentReference.id)
 
-                Toast.makeText(context, "Randevunuz Başarıyla Oluşturuldu!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Randevu Talebi Ustaya Gönderildi!", Toast.LENGTH_SHORT).show()
                 Log.d("FirebaseBackend", "Yeni Randevu Oluştu: ${documentReference.id}")
             }
             .addOnFailureListener { e ->

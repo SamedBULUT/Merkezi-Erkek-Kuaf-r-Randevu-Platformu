@@ -46,5 +46,14 @@
         <action
             android:id="@+id/action_loginFragment_to_profilFragment"
             app:destination="@id/profilFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_berberAnaFragment"
+            app:destination="@id/berberAnaFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/berberAnaFragment"
+        android:name="com.berberbul.app.BerberAnaFragment"
+        android:label="BerberAnaFragment"
+        tools:layout="@layout/fragment_berber_ana" />
 </navigation>
