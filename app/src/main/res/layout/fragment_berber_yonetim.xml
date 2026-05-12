@@ -38,7 +38,8 @@
             android:padding="8dp"
             android:text="Henüz konum seçilmedi" />
 
-        <FrameLayout
+        <!-- FrameLayout yerine OSMDroid MapView eklendi -->
+        <org.osmdroid.views.MapView
             android:id="@+id/mapContainer"
             android:layout_width="match_parent"
             android:layout_height="250dp"
