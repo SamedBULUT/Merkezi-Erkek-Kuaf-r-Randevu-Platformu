@@ -1,10 +1,14 @@
 package com.berberbul.app
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.osmdroid.config.Configuration
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -13,6 +17,8 @@ class ProfilFragment : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var mapView: MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +32,11 @@ class ProfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-<<<<<<< berber-paneli-arayuz
-        // Harita ayarını yükle
+        val context = requireContext()
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
 
-        // Kendi tasarımını (layout) kullan
         val view = inflater.inflate(R.layout.fragment_berber_yonetim, container, false)
 
-        // Haritayı başlat
         mapView = view.findViewById(R.id.mapContainer)
 
         setupBerberHaritasi()
@@ -46,7 +49,6 @@ class ProfilFragment : Fragment() {
         val mapController = mapView.controller
         mapController.setZoom(15.0)
 
-        // Trabzon koordinatları (KTÜ çevresi)
         val startPoint = GeoPoint(41.0015, 39.7568)
         mapController.setCenter(startPoint)
     }
@@ -63,10 +65,6 @@ class ProfilFragment : Fragment() {
         if (::mapView.isInitialized) {
             mapView.onPause()
         }
-=======
-        // Kendi tasarımını (layout) kullan
-        return inflater.inflate(R.layout.fragment_profil, container, false)
->>>>>>> main
     }
 
     companion object {
