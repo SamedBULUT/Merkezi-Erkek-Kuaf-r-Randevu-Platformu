@@ -1,7 +1,7 @@
 package com.berberbul.app
 
 data class Randevu(
-    val id: String = "",
+    var id: String = "",
     val barberName: String = "",
     val customerName: String = "",
     val date: String = "",
