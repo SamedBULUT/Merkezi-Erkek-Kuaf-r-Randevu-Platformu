@@ -10,11 +10,14 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+/**
+ * Müşteri Profil Sayfası.
+ * Bu sayfada sadece müşterinin kişisel bilgileri yer alır.
+ * Harita modülü buradan kaldırılmış ve Berber tarafına taşınmıştır.
+ */
 class ProfilFragment : Fragment() {
 
+    // Bundle ile veri taşıyacaksanız bu parametreleri tutabilirsiniz
     private var param1: String? = null
     private var param2: String? = null
 
@@ -23,8 +26,8 @@ class ProfilFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            param1 = it.getString("param1")
+            param2 = it.getString("param2")
         }
     }
 
@@ -32,6 +35,11 @@ class ProfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        berber-paneli-arayuz
+        // DİKKAT: R.layout.fragment_profil dosyasını şişirdiğinizden emin olun.
+        // Daha önce burada fragment_berber_yonetim yazıyordu, onu düzelttik.
+        return inflater.inflate(R.layout.fragment_profil, container, false)
+
         val context = requireContext()
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
 
@@ -51,20 +59,14 @@ class ProfilFragment : Fragment() {
 
         val startPoint = GeoPoint(41.0015, 39.7568)
         mapController.setCenter(startPoint)
+        main
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (::mapView.isInitialized) {
-            mapView.onResume()
-        }
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onPause() {
-        super.onPause()
-        if (::mapView.isInitialized) {
-            mapView.onPause()
-        }
+        // Burada profil bilgilerini (ad, soyad, telefon vb.)
+        // veritabanından çekip UI elemanlarına atayabilirsin.
     }
 
     companion object {
@@ -72,8 +74,8 @@ class ProfilFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             ProfilFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString("param1", param1)
+                    putString("param2", param2)
                 }
             }
     }

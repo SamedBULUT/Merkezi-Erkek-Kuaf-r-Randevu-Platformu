@@ -13,7 +13,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:text="Berber Adı"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/tvProfilAdres"
@@ -23,7 +23,23 @@
         android:textColor="#007BFF"
         android:gravity="center"
         android:text="Adres Bilgisi"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="16dp"/>
+
+    <!-- HARİTA MODÜLÜ (Yeni Eklendi) -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- KONUM KAYDET BUTONU (Yeni Eklendi) -->
+    <Button
+        android:id="@+id/btnKonumKaydet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dükkan Konumunu Kaydet"
+        android:backgroundTint="#28A745"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/tvProfilTarih"
@@ -33,7 +49,8 @@
         android:padding="12dp"
         android:background="?android:attr/editTextBackground"
         android:gravity="center"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="12dp"/>
+
     <TextView
         android:id="@+id/tvProfilSaat"
         android:layout_width="match_parent"
@@ -42,7 +59,8 @@
         android:padding="12dp"
         android:background="?android:attr/editTextBackground"
         android:gravity="center"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="16dp"/>
+
     <Button
         android:id="@+id/btnProfilRandevuAl"
         android:layout_width="match_parent"
