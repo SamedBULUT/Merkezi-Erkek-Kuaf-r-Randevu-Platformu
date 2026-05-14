@@ -20,34 +20,29 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Gezinme çubuğu ve fragment geçişlerinin (Navigation Graph) birbirine bağlanması
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
-        // Sayfa değiştikçe alt menüyü dinamik olarak güncelleyen dinleyici
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                // 1. Kapak ve Giriş Ekranları: Alt menü tamamen gizli
+
                 R.id.selectionFragment, R.id.loginFragment -> {
                     bottomNavigationView.visibility = View.GONE
                 }
 
-                // 2. Berber (Usta) Sayfaları: Berber menüsünü yükle
-                R.id.berberAnaFragment, R.id.BerberProfilFragment -> {
+                // Buraya yeni eklediğimiz iki sayfanın ID'sini (berberDukkanimFragment ve berberDukkanDuzenleFragment) ekledik
+                R.id.berberAnaFragment, R.id.BerberProfilFragment, R.id.berberDukkanimFragment, R.id.berberDukkanDuzenleFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     bottomNavigationView.menu.clear()
-                    // Az önce oluşturduğumuz menu_berber.xml dosyasını bağlıyoruz
                     bottomNavigationView.inflateMenu(R.menu.menu_berber)
                 }
 
-                // 3. Müşteri Sayfaları (Diğer tüm durumlar): Orijinal müşteri menüsünü yükle
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     bottomNavigationView.menu.clear()
-                    // Müşterinin orijinal alt menü XML dosyasını yüklüyoruz (İsmini kontrol et)
                     bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu)
                 }
             }
