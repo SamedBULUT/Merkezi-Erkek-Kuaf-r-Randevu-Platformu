@@ -12,12 +12,10 @@ import org.osmdroid.views.MapView
 
 /**
  * Müşteri Profil Sayfası.
- * Bu sayfada sadece müşterinin kişisel bilgileri yer alır.
- * Harita modülü buradan kaldırılmış ve Berber tarafına taşınmıştır.
+ * Bu sayfada müşterinin kişisel bilgileri ve harita yer alır.
  */
 class ProfilFragment : Fragment() {
 
-    // Bundle ile veri taşıyacaksanız bu parametreleri tutabilirsiniz
     private var param1: String? = null
     private var param2: String? = null
 
@@ -35,18 +33,15 @@ class ProfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        berber-paneli-arayuz
-        // DİKKAT: R.layout.fragment_profil dosyasını şişirdiğinizden emin olun.
-        // Daha önce burada fragment_berber_yonetim yazıyordu, onu düzelttik.
-        return inflater.inflate(R.layout.fragment_profil, container, false)
-
+        // Osmdroid yapılandırmasını yükle
         val context = requireContext()
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
 
+        // Tasarımı (Layout) bağla
         val view = inflater.inflate(R.layout.fragment_berber_yonetim, container, false)
 
+        // Haritayı başlat
         mapView = view.findViewById(R.id.mapContainer)
-
         setupBerberHaritasi()
 
         return view
@@ -57,16 +52,24 @@ class ProfilFragment : Fragment() {
         val mapController = mapView.controller
         mapController.setZoom(15.0)
 
+        // Başlangıç noktası (Trabzon koordinatları)
         val startPoint = GeoPoint(41.0015, 39.7568)
         mapController.setCenter(startPoint)
-        main
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Profil bilgilerini burada doldurabilirsin
+    }
 
-        // Burada profil bilgilerini (ad, soyad, telefon vb.)
-        // veritabanından çekip UI elemanlarına atayabilirsin.
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
     }
 
     companion object {

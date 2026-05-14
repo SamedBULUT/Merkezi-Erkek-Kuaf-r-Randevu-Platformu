@@ -6,5 +6,6 @@ data class Randevu(
     val customerName: String = "",
     val date: String = "",
     val time: String = "",
+    val status: String = "Bekliyor",
     val isConfirmed: Boolean = false
 )

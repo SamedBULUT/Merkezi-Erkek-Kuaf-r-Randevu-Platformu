@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/berberAnaFragment"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Talepler" />
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="Ana Sayfa" />
+
     <item
-        android:id="@+id/berberProfilFragment"
-        android:icon="@android:drawable/ic_menu_myplaces"
+        android:id="@+id/berberDukkanimFragment"
+        android:icon="@drawable/ic_makas"
         android:title="Dükkanım" />
+
 </menu>
