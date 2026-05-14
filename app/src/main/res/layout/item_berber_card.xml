@@ -1,68 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#E0E0E0">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvBerberAdi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Makas Kardeşliği Erkek Kuaförü"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#212121"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvMesafe" />
-
-        <TextView
-            android:id="@+id/tvMesafe"
+            android:id="@+id/tvDukkanAdi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.2 km"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#2980B9"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="#212121"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:id="@+id/tvTelefon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#757575"
+            android:layout_marginBottom="4dp"
+            app:drawableStartCompat="@android:drawable/ic_menu_call"
+            android:drawablePadding="8dp" />
 
         <TextView
             android:id="@+id/tvAdres"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Çankaya, Ankara"
-            android:textColor="#757575"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/tvBerberAdi"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tvPuan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="⭐ 4.8 (120 Yorum)"
-            android:textSize="14sp"
-            android:textColor="#F39C12"
-            app:layout_constraintTop_toBottomOf="@id/tvAdres"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="15sp"
+            android:textColor="#757575"
+            app:drawableStartCompat="@android:drawable/ic_menu_mylocation"
+            android:drawablePadding="8dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

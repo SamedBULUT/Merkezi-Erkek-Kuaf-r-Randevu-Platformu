@@ -9,5 +9,8 @@ data class Berber(
     val hizmetler: List<String> = emptyList(),
     val adres: String = "Adres bilgisi yok",
     val yorumSayisi: Int = 0,
-    var musteriyeUzaklik: Double = 0.0
+    var musteriyeUzaklik: Double = 0.0,
+    
+    val berberUid: String = "",
+    val telefon: String = ""
 )

@@ -9,7 +9,12 @@
         android:id="@+id/profilFragment"
         android:name="com.berberbul.app.ProfilFragment"
         android:label="fragment_profil"
-        tools:layout="@layout/fragment_profil" />
+        tools:layout="@layout/fragment_profil" >
+        <action
+            android:id="@+id/action_profilFragment_to_musteriProfilDuzenleFragment"
+            app:destination="@id/musteriProfilDuzenleFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/RandevuAlFragment"
         android:name="com.berberbul.app.RandevuAlFragment"
@@ -19,16 +24,19 @@
             android:id="@+id/action_RandevuAlFragment_to_BerberProfilFragment"
             app:destination="@id/BerberProfilFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/randevularimFragment"
         android:name="com.berberbul.app.RandevularimFragment"
         android:label="fragment_randevularim"
         tools:layout="@layout/fragment_randevularim" />
+
     <fragment
         android:id="@+id/BerberProfilFragment"
         android:name="com.berberbul.app.BerberProfilFragment"
         android:label="BerberProfilFragment"
         tools:layout="@layout/fragment_berber_profil" />
+
     <fragment
         android:id="@+id/selectionFragment"
         android:name="com.berberbul.app.SelectionFragment"
@@ -37,6 +45,7 @@
             android:id="@+id/action_selectionFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.berberbul.app.LoginFragment"
@@ -73,5 +82,11 @@
         android:name="com.berberbul.app.BerberDukkanDuzenleFragment"
         android:label="BerberDukkanDuzenleFragment"
         tools:layout="@layout/fragment_berber_dukkan_duzenle" />
+
+    <fragment
+        android:id="@+id/musteriProfilDuzenleFragment"
+        android:name="com.berberbul.app.MusteriProfilDuzenleFragment"
+        android:label="MusteriProfilDuzenleFragment"
+        tools:layout="@layout/fragment_musteri_profil_duzenle" />
 
 </navigation>

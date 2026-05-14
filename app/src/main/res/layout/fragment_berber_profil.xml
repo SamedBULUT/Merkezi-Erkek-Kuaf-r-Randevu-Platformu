@@ -1,70 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:background="#F8F9FA"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tvProfilDukkanAdi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="Berber Adı"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/tvProfilAdres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="#007BFF"
-        android:gravity="center"
-        android:text="Adres Bilgisi"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- HARİTA MODÜLÜ (Yeni Eklendi) -->
-    <org.osmdroid.views.MapView
-        android:id="@+id/mapContainer"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginBottom="8dp" />
-
-    <!-- KONUM KAYDET BUTONU (Yeni Eklendi) -->
-    <Button
-        android:id="@+id/btnKonumKaydet"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dükkan Konumunu Kaydet"
-        android:backgroundTint="#28A745"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <TextView
-        android:id="@+id/tvProfilTarih"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tarih Seçmek İçin Dokunun"
-        android:padding="12dp"
-        android:background="?android:attr/editTextBackground"
-        android:gravity="center"
-        android:layout_marginBottom="12dp"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_makas"
+            app:tint="#424242" />
 
-    <TextView
-        android:id="@+id/tvProfilSaat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Saat Seçmek İçin Dokunun"
-        android:padding="12dp"
-        android:background="?android:attr/editTextBackground"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"/>
+        <TextView
+            android:id="@+id/tvVitrindekiDukkanAdi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:textAlignment="center"
+            android:textColor="#212121"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnProfilRandevuAl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Randevu Al"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvVitrindekiTelefon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="#424242"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call" />
+
+                <TextView
+                    android:id="@+id/tvVitrindekiAdres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:textColor="#424242"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_mylocation" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Randevu Bilgileri"
+            android:textColor="#212121"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTarihSec"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="12dp"
+                android:text="Tarih Seçin"
+                app:cornerRadius="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaatSec"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="12dp"
+                android:text="Saat Seçin"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRandevuAl"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="Randevu İste"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+</ScrollView>
