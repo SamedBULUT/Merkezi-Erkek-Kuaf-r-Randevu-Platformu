@@ -1,85 +1,58 @@
 package com.berberbul.app
 
 import android.os.Bundle
-import android.preference.PreferenceManager
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.osmdroid.config.Configuration
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
-/**
- * Müşteri Profil Sayfası.
- * Bu sayfada müşterinin kişisel bilgileri ve harita yer alır.
- */
 class ProfilFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
-
-    private lateinit var mapView: MapView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString("param1")
-            param2 = it.getString("param2")
-        }
-    }
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Osmdroid yapılandırmasını yükle
-        val context = requireContext()
-        Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
-
-        // Tasarımı (Layout) bağla
-        val view = inflater.inflate(R.layout.fragment_berber_yonetim, container, false)
-
-        // Haritayı başlat
-        mapView = view.findViewById(R.id.mapContainer)
-        setupBerberHaritasi()
-
-        return view
-    }
-
-    private fun setupBerberHaritasi() {
-        mapView.setMultiTouchControls(true)
-        val mapController = mapView.controller
-        mapController.setZoom(15.0)
-
-        // Başlangıç noktası (Trabzon koordinatları)
-        val startPoint = GeoPoint(41.0015, 39.7568)
-        mapController.setCenter(startPoint)
+        return inflater.inflate(R.layout.fragment_profil, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Profil bilgilerini burada doldurabilirsin
-    }
 
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
-    override fun onPause() {
-        super.onPause()
-        mapView.onPause()
-    }
+        val tvAdSoyad = view.findViewById<TextView>(R.id.tvAdSoyad)
+        val tvTelefon = view.findViewById<TextView>(R.id.tvTelefon)
+        val btnDuzenle = view.findViewById<Button>(R.id.btnDuzenle)
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfilFragment().apply {
-                arguments = Bundle().apply {
-                    putString("param1", param1)
-                    putString("param2", param2)
+        btnDuzenle.setOnClickListener {
+            findNavController().navigate(R.id.action_profilFragment_to_musteriProfilDuzenleFragment)
+        }
+
+        val uid = auth.currentUser?.uid
+        if (uid != null) {
+            db.collection("users").document(uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        tvAdSoyad.text = document.getString("adSoyad") ?: "Belirtilmemiş"
+                        tvTelefon.text = document.getString("telefon") ?: "Belirtilmemiş"
+                    } else {
+                        tvAdSoyad.text = "Bilgi yok"
+                        tvTelefon.text = "Bilgi yok"
+                    }
                 }
-            }
+                .addOnFailureListener { e ->
+                    Toast.makeText(requireContext(), "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 }

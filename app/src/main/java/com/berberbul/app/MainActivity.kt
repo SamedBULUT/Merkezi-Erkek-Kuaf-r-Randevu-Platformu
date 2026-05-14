@@ -28,18 +28,14 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-
-                R.id.selectionFragment, R.id.loginFragment -> {
+                R.id.selectionFragment, R.id.loginFragment, R.id.berberDukkanDuzenleFragment, R.id.musteriProfilDuzenleFragment -> {
                     bottomNavigationView.visibility = View.GONE
                 }
-
-                // Buraya yeni eklediğimiz iki sayfanın ID'sini (berberDukkanimFragment ve berberDukkanDuzenleFragment) ekledik
-                R.id.berberAnaFragment, R.id.BerberProfilFragment, R.id.berberDukkanimFragment, R.id.berberDukkanDuzenleFragment -> {
+                R.id.berberAnaFragment, R.id.berberDukkanimFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     bottomNavigationView.menu.clear()
                     bottomNavigationView.inflateMenu(R.menu.menu_berber)
                 }
-
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     bottomNavigationView.menu.clear()
