@@ -25,7 +25,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Dükkan Adı (Örn: Makas Kardeşliği)"
+            android:hint="Dükkan Adı"
             android:layout_marginBottom="20dp"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -43,7 +43,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Telefon Numarası (Örn: 0555 444 33 22)"
+            android:hint="Telefon Numarası"
             android:layout_marginBottom="20dp"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Açık Adres"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="20dp"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
@@ -73,9 +73,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:lines="4"
-                android:gravity="top|start" />
+                android:lines="3" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="12dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E0E0E0">
+
+            <org.osmdroid.views.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Haritaya dokunarak konumu işaretleyebilirsiniz"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnKonumAl"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Şu Anki Konumumu Kullan"
+            app:icon="@android:drawable/ic_menu_mylocation" />
+
+        <TextView
+            android:id="@+id/tvKonumDurumu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Konum: Henüz seçilmedi"
+            android:textAlignment="center"
+            android:textColor="#757575"
+            android:textSize="12sp"
+            android:layout_marginBottom="24dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnKaydet"

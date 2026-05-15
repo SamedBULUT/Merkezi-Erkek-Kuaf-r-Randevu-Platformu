@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.berberbul.app.R
+import java.util.Locale
 
 class BerberAdapter(
     private var berberListesi: ArrayList<Berber>,
@@ -16,6 +17,7 @@ class BerberAdapter(
         val tvDukkanAdi: TextView = itemView.findViewById(R.id.tvDukkanAdi)
         val tvTelefon: TextView = itemView.findViewById(R.id.tvTelefon)
         val tvAdres: TextView = itemView.findViewById(R.id.tvAdres)
+        val tvMesafe: TextView = itemView.findViewById(R.id.tvMesafe)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BerberViewHolder {
@@ -25,20 +27,18 @@ class BerberAdapter(
 
     override fun onBindViewHolder(holder: BerberViewHolder, position: Int) {
         val berber = berberListesi[position]
-
-        // Firestore'dan gelen güncel verileri ekrana basıyoruz
         holder.tvDukkanAdi.text = berber.dukkanAdi
-        holder.tvTelefon.text = if (berber.telefon.isNotEmpty()) berber.telefon else "Telefon Belirtilmemiş"
-        holder.tvAdres.text = if (berber.adres.isNotEmpty()) berber.adres else "Adres Belirtilmemiş"
+        holder.tvTelefon.text = berber.telefon
+        holder.tvAdres.text = berber.adres
+
+        holder.tvMesafe.text = String.format(Locale.getDefault(), "%.1f km", berber.musteriyeUzaklik)
 
         holder.itemView.setOnClickListener {
             onItemClick(berber)
         }
     }
 
-    override fun getItemCount(): Int {
-        return berberListesi.size
-    }
+    override fun getItemCount(): Int = berberListesi.size
 
     fun listeyiGuncelle(yeniListe: ArrayList<Berber>) {
         berberListesi.clear()

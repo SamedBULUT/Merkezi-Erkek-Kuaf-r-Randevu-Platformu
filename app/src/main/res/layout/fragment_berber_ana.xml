@@ -68,7 +68,7 @@
                     android:id="@+id/tvBekleyenSayisi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3"
+                    android:text="0"
                     android:textColor="#FFB300"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -76,10 +76,14 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardOnaylananlar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp">
 
@@ -101,7 +105,7 @@
                     android:id="@+id/tvOnaylananSayisi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="0"
                     android:textColor="#4CAF50"
                     android:textSize="24sp"
                     android:textStyle="bold" />

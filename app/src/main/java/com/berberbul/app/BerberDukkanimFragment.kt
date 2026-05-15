@@ -35,7 +35,7 @@ class BerberDukkanimFragment : Fragment() {
         val tvAdres = view.findViewById<TextView>(R.id.tvAdres)
         val btnDuzenle = view.findViewById<Button>(R.id.btnDuzenle)
 
-        // Düzenleme sayfasına geçiş (Bunu nav_graph'a ekleyeceğiz)
+
         btnDuzenle.setOnClickListener {
             findNavController().navigate(R.id.action_berberDukkanimFragment_to_berberDukkanDuzenleFragment)
         }

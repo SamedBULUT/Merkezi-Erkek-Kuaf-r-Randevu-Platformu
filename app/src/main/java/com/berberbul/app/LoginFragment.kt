@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Kapak sayfasından gelen rolü alıyoruz (Örn: "berber" veya "musteri")
+
         val gelenRol = arguments?.getString("KULLANICI_ROLU") ?: "musteri"
 
         val etEmail = view.findViewById<EditText>(R.id.etEmail)

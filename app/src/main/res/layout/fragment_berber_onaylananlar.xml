@@ -3,22 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8F9FA">
+    android:padding="16dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:text="Randevularım"
-        android:textSize="24sp"
+        android:text="Onaylanan Randevular"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#212121" />
+        android:layout_marginBottom="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRandevular"
+        android:id="@+id/rvOnaylananlar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="80dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
