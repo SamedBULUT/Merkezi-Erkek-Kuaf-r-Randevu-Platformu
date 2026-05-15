@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class BerberAnaFragment : Fragment() {
@@ -17,19 +19,17 @@ class BerberAnaFragment : Fragment() {
     private lateinit var rvBerberRandevular: RecyclerView
     private lateinit var tvBekleyenSayisi: TextView
     private lateinit var tvOnaylananSayisi: TextView
+    private lateinit var cardOnaylananlar: View
     private lateinit var adapter: BerberRandevuAdapter
 
     private val randevuListesi = mutableListOf<Randevu>()
     private val db = FirebaseFirestore.getInstance()
-
-    // Sisteme giriş yapan aktif berberin adı (Giriş sistemine göre dinamikleştirilebilir)
-    private val aktifBerberAdi = "Kuaför Selim"
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Hazırladığımız XML tasarımını bağlıyoruz
         return inflater.inflate(R.layout.fragment_berber_ana, container, false)
     }
 
@@ -39,43 +39,60 @@ class BerberAnaFragment : Fragment() {
         rvBerberRandevular = view.findViewById(R.id.rvBerberRandevular)
         tvBekleyenSayisi = view.findViewById(R.id.tvBekleyenSayisi)
         tvOnaylananSayisi = view.findViewById(R.id.tvOnaylananSayisi)
+        cardOnaylananlar = view.findViewById(R.id.cardOnaylananlar)
 
         rvBerberRandevular.layoutManager = LinearLayoutManager(requireContext())
 
-        // Adapter'ı başlatırken buton tıklamalarını dinliyoruz
         adapter = BerberRandevuAdapter(
             randevuListesi = randevuListesi,
             onOnaylaClick = { secilenRandevu ->
                 randevuDurumunuGuncelle(secilenRandevu.id, "Onaylandı")
             },
             onReddetClick = { secilenRandevu ->
-                randevuDurumunuGuncelle(secilenRandevu.id, "Reddedildi")
+                randevuDurumunuGuncelle(secilenRandevu.id, "Onaylanmadı")
             }
         )
         rvBerberRandevular.adapter = adapter
 
-        randevulariGetir()
+        cardOnaylananlar.setOnClickListener {
+            findNavController().navigate(R.id.action_BerberAnaFragment_to_BerberOnaylananlarFragment)
+        }
+
+        randevulariAnlikTakipEt()
     }
 
-    private fun randevulariGetir() {
-        // Berberin adına ait ve henüz onaylanmamış/bekleyen randevuları getiriyoruz
+    private fun randevulariAnlikTakipEt() {
+        val aktifBerberUid = auth.currentUser?.uid ?: return
+
         db.collection("randevular")
-            .whereEqualTo("barberName", aktifBerberAdi)
-            .whereEqualTo("status", "Bekliyor")
-            .get()
-            .addOnSuccessListener { documents ->
-                randevuListesi.clear()
-                for (document in documents) {
-                    val randevu = document.toObject(Randevu::class.java)
-                    // Güncelleme yapabilmek için belgenin Firebase ID'sini alıyoruz
-                    randevu.id = document.id
-                    randevuListesi.add(randevu)
+            .whereEqualTo("berberId", aktifBerberUid)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("BerberPanel", "Dinleme hatası", e)
+                    return@addSnapshotListener
                 }
-                tvBekleyenSayisi.text = randevuListesi.size.toString()
-                adapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { e ->
-                Log.e("BerberPanel", "Randevular yüklenemedi", e)
+
+                if (snapshots != null) {
+                    randevuListesi.clear()
+                    var bekleyenCount = 0
+                    var onaylananCount = 0
+
+                    for (document in snapshots) {
+                        val randevu = document.toObject(Randevu::class.java)
+                        randevu.id = document.id
+
+                        if (randevu.status == "Bekliyor") {
+                            randevuListesi.add(randevu)
+                            bekleyenCount++
+                        } else if (randevu.status == "Onaylandı") {
+                            onaylananCount++
+                        }
+                    }
+
+                    tvBekleyenSayisi.text = bekleyenCount.toString()
+                    tvOnaylananSayisi.text = onaylananCount.toString()
+                    adapter.notifyDataSetChanged()
+                }
             }
     }
 
@@ -85,12 +102,9 @@ class BerberAnaFragment : Fragment() {
         db.collection("randevular").document(documentId)
             .update("status", yeniDurum)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Randevu $yeniDurum", Toast.LENGTH_SHORT).show()
-                // Durum güncellenince listeyi anında yeniliyoruz
-                randevulariGetir()
+                Toast.makeText(requireContext(), "İşlem başarılı: $yeniDurum", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "Hata oluştu!", Toast.LENGTH_SHORT).show()
                 Log.e("BerberPanel", "Güncelleme hatası", e)
             }
     }

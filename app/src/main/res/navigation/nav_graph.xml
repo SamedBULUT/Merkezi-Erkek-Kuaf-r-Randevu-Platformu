@@ -65,7 +65,11 @@
         android:id="@+id/berberAnaFragment"
         android:name="com.berberbul.app.BerberAnaFragment"
         android:label="BerberAnaFragment"
-        tools:layout="@layout/fragment_berber_ana" />
+        tools:layout="@layout/fragment_berber_ana" >
+        <action
+            android:id="@+id/action_BerberAnaFragment_to_BerberOnaylananlarFragment"
+            app:destination="@id/berberOnaylananlarFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/berberDukkanimFragment"
@@ -88,5 +92,9 @@
         android:name="com.berberbul.app.MusteriProfilDuzenleFragment"
         android:label="MusteriProfilDuzenleFragment"
         tools:layout="@layout/fragment_musteri_profil_duzenle" />
+    <fragment
+        android:id="@+id/berberOnaylananlarFragment"
+        android:name="com.berberbul.app.BerberOnaylananlarFragment"
+        android:label="BerberOnaylananlarFragment" />
 
 </navigation>

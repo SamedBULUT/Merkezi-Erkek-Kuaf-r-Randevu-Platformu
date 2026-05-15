@@ -2,6 +2,8 @@ package com.berberbul.app
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,8 +55,27 @@ class BerberProfilFragment : Fragment() {
             db.collection("berberler").document(berberUid).get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
-                        tvTelefon.text = document.getString("telefon") ?: "Telefon Belirtilmemiş"
-                        tvAdres.text = document.getString("adres") ?: "Adres Belirtilmemiş"
+                        val tel = document.getString("telefon") ?: "Telefon Belirtilmemiş"
+                        val adr = document.getString("adres") ?: "Adres Belirtilmemiş"
+                        val lat = document.getDouble("enlem")
+                        val lon = document.getDouble("boylam")
+
+                        tvTelefon.text = tel
+                        tvAdres.text = adr
+
+                        if (lat != null && lon != null && lat != 0.0) {
+                            tvAdres.setOnClickListener {
+                                val gmmIntentUri = Uri.parse("geo:$lat,$lon?q=$lat,$lon($dukkanAdi)")
+                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                mapIntent.setPackage("com.google.android.apps.maps")
+                                if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+                                    startActivity(mapIntent)
+                                } else {
+                                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lon"))
+                                    startActivity(webIntent)
+                                }
+                            }
+                        }
                     }
                 }
         }
@@ -126,23 +147,24 @@ class BerberProfilFragment : Fragment() {
     private fun gercekKaydiYap() {
         val musteriUid = auth.currentUser?.uid ?: ""
 
-        val yeniRandevu = hashMapOf(
-            "barberName" to dukkanAdi,
-            "berberId" to berberUid,
-            "customerName" to musteriAdSoyad,
-            "musteriId" to musteriUid,
-            "date" to secilenTarihBilgisi,
-            "time" to secilenSaatBilgisi,
-            "status" to "Bekliyor"
-        )
+        db.collection("users").document(musteriUid).get().addOnSuccessListener { document ->
+            val musteriTel = document.getString("telefon") ?: "Telefon Yok"
 
-        db.collection("randevular")
-            .add(yeniRandevu)
-            .addOnSuccessListener { documentReference ->
-                db.collection("randevular").document(documentReference.id)
-                    .update("id", documentReference.id)
+            val yeniRandevu = hashMapOf(
+                "barberName" to dukkanAdi,
+                "berberId" to berberUid,
+                "customerName" to musteriAdSoyad,
+                "musteriId" to musteriUid,
+                "customerPhone" to musteriTel, // Telefon numarasını ekledik
+                "date" to secilenTarihBilgisi,
+                "time" to secilenSaatBilgisi,
+                "status" to "Bekliyor"
+            )
 
+            db.collection("randevular").add(yeniRandevu).addOnSuccessListener { docRef ->
+                db.collection("randevular").document(docRef.id).update("id", docRef.id)
                 Toast.makeText(context, "Randevu Talebi Gönderildi!", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 }
